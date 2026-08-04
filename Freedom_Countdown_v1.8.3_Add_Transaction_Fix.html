@@ -1,0 +1,1588 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0c0f">
+<title>Freedom Countdown v1.5 — Luxury Graphite</title>
+<style>
+:root{
+  --bg:#08090c;
+  --bg2:#111318;
+  --card:#17191f;
+  --card2:#20232b;
+  --ink:#f7f4eb;
+  --muted:#9d9b94;
+  --line:rgba(225,204,151,.16);
+  --line-soft:rgba(255,255,255,.07);
+  --gold:#c8aa67;
+  --gold-hi:#e1c98d;
+  --gold-deep:#8c6e33;
+  --emerald:#52d98a;
+  --purple:#9e82ff;
+  --blue:#6ca9ff;
+  --red:#e2757f;
+  --shadow:0 22px 55px rgba(0,0,0,.48);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#08090c;color:var(--ink);font-family:Inter,"SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+body{
+  background:
+    radial-gradient(circle at 18% 0%,rgba(145,112,211,.16),transparent 30%),
+    radial-gradient(circle at 84% 12%,rgba(200,170,103,.09),transparent 26%),
+    radial-gradient(circle at 78% 88%,rgba(82,217,138,.08),transparent 28%),
+    linear-gradient(180deg,#14171d 0%,#090a0d 72%);
+  background-attachment:fixed;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;
+  background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
+  background-size:30px 30px;
+}
+.tab-radio{position:absolute;opacity:0;pointer-events:none}
+.shell{max-width:460px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 14px calc(104px + env(safe-area-inset-bottom))}
+.topbar{display:flex;align-items:center;justify-content:center;margin:8px 2px 20px;text-align:center}
+.brand h1{margin:0;font-size:34px;letter-spacing:-.05em;font-weight:850}
+.brand p{margin:5px 0 0;color:var(--muted);font-size:12px;font-style:italic;text-align:center}
+.status{
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:var(--gold-hi);
+  background:linear-gradient(145deg,#282b33,#121419);
+  border:1px solid rgba(225,201,141,.24);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 24px rgba(0,0,0,.36);
+}
+.status svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.view{display:none}
+#tab-home:checked ~ .shell #home,
+#tab-debt:checked ~ .shell #debt,
+#tab-savings:checked ~ .shell #savings,
+#tab-insights:checked ~ .shell #insights,
+#tab-goals:checked ~ .shell #goals,
+#tab-family:checked ~ .shell #family{display:block}
+.section-kicker{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:800;margin:0 2px 9px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.card{
+  position:relative;overflow:hidden;border-radius:22px;padding:16px;
+  background:
+    linear-gradient(145deg,rgba(42,45,54,.96),rgba(18,20,25,.98) 72%);
+  border:1px solid var(--line);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -1px 0 rgba(255,255,255,.02),var(--shadow);
+}
+.card:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.015) 36%,transparent 68%);
+}
+.card:after{
+  content:"";position:absolute;left:-22%;right:-22%;top:-48%;height:72%;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,255,255,.09),transparent 66%);filter:blur(10px);opacity:.55;pointer-events:none;
+}
+.card>*{position:relative;z-index:1}
+.label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#aaa79f;font-weight:800}
+.value{font-size:27px;font-weight:850;letter-spacing:-.04em;margin-top:7px}
+.meta{font-size:11px;color:var(--muted);margin-top:4px}
+.metric-card{min-height:104px}
+.metric-card.debt{background:radial-gradient(circle at 88% 10%,rgba(226,117,127,.13),transparent 33%),linear-gradient(145deg,rgba(42,45,54,.96),rgba(18,20,25,.98) 72%)}
+.metric-card.fund{background:radial-gradient(circle at 88% 10%,rgba(82,217,138,.14),transparent 33%),linear-gradient(145deg,rgba(42,45,54,.96),rgba(18,20,25,.98) 72%)}
+.metric-icon{
+  position:absolute;right:14px;top:15px;width:34px;height:34px;border-radius:12px;display:grid;place-items:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 18px rgba(0,0,0,.28)
+}
+.metric-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.metric-icon.red{color:#ef9da5;background:rgba(226,117,127,.12);border:1px solid rgba(226,117,127,.22)}
+.metric-icon.green{color:#7be5a7;background:rgba(82,217,138,.12);border:1px solid rgba(82,217,138,.22)}
+.mission{margin-top:11px;background:radial-gradient(circle at 92% 8%,rgba(200,170,103,.14),transparent 30%),linear-gradient(145deg,rgba(44,46,53,.98),rgba(17,19,23,.98))}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mission-title{font-size:20px;font-weight:850;margin-top:7px}
+.percent{font-size:19px;font-weight:850;color:var(--gold-hi)}
+.track{height:9px;border-radius:999px;background:#292c33;margin:13px 0 8px;overflow:hidden;box-shadow:inset 0 2px 5px rgba(0,0,0,.35)}
+.fill{height:100%;border-radius:999px;position:relative}
+.fill:after{content:"";position:absolute;inset:1px 4px auto;height:35%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.3),transparent)}
+.goldfill{background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi))}
+.greenfill{background:linear-gradient(90deg,#2caf69,var(--emerald))}
+.purplefill{background:linear-gradient(90deg,#7556dc,var(--purple))}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:11px}
+.feature-card{min-height:120px}
+.feature-icon{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;margin-bottom:10px}
+.feature-icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.feature-icon.purple{color:#b49fff;background:rgba(158,130,255,.13);border:1px solid rgba(158,130,255,.2)}
+.feature-icon.green{color:#78e4a4;background:rgba(82,217,138,.12);border:1px solid rgba(82,217,138,.2)}
+.feature-main{font-size:21px;font-weight:850}
+.feature-main.purple{color:#b49fff}.feature-main.green{color:#73e1a0}
+.milestones{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:11px}
+.mini{padding:12px 8px;text-align:center;border-radius:18px;background:linear-gradient(145deg,rgba(39,42,50,.96),rgba(16,18,23,.98));border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 12px 28px rgba(0,0,0,.34)}
+.icon-disc{width:34px;height:34px;margin:0 auto 7px;border-radius:12px;display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 16px rgba(0,0,0,.28)}
+.icon-disc svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon-disc.blue{color:#8dbbff;background:rgba(108,169,255,.12);border:1px solid rgba(108,169,255,.2)}
+.icon-disc.gold{color:var(--gold-hi);background:rgba(200,170,103,.12);border:1px solid rgba(200,170,103,.23)}
+.icon-disc.green{color:#79e4a5;background:rgba(82,217,138,.12);border:1px solid rgba(82,217,138,.2)}
+.mini strong{display:block;font-size:10px}.mini small{display:block;font-size:8px;color:var(--muted);margin-top:3px}
+.quickbar{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:11px}
+.quick{padding:11px 8px;text-align:center;border-radius:17px;background:linear-gradient(145deg,rgba(34,37,44,.96),rgba(15,17,21,.98));border:1px solid var(--line-soft)}
+.quick svg{width:18px;height:18px;fill:none;stroke:var(--gold-hi);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.quick b{display:block;font-size:9px;margin-top:4px}.quick span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+.page-title{font-size:24px;font-weight:850;letter-spacing:-.03em;margin:2px 0 12px}
+.stack{display:grid;gap:10px}
+.debt-row,.data-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.debt-row:last-child,.data-row:last-child{border-bottom:0}
+.debt-name{font-weight:780;font-size:13px}.debt-sub{font-size:10px;color:var(--muted);margin-top:3px}.debt-amount{font-size:14px;font-weight:850}
+.vehicle{border-color:rgba(200,170,103,.22);background:radial-gradient(circle at 92% 8%,rgba(200,170,103,.11),transparent 32%),linear-gradient(145deg,rgba(42,45,54,.96),rgba(18,20,25,.98))}
+.badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:800;background:rgba(200,170,103,.1);border:1px solid rgba(200,170,103,.22);color:var(--gold-hi)}
+.update{
+  margin-top:11px;border-radius:20px;overflow:hidden;background:linear-gradient(145deg,rgba(37,40,47,.97),rgba(15,17,22,.98));border:1px solid var(--line)
+}
+.update summary{list-style:none;padding:13px 15px;cursor:pointer;font-size:11px;color:var(--gold-hi);font-weight:800}
+.update summary::-webkit-details-marker{display:none}
+.update-body{padding:0 15px 15px}
+.field{margin-top:9px}.field label{display:block;font-size:9px;color:var(--muted);margin-bottom:5px}.field input{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:#0f1116;color:var(--ink);padding:11px;font-size:14px}
+.nav{
+  position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:20;
+  width:min(430px,calc(100% - 24px));display:grid;grid-template-columns:repeat(5,1fr);align-items:end;
+  padding:9px 7px calc(9px + env(safe-area-inset-bottom));border-radius:27px;
+  background:linear-gradient(180deg,rgba(45,48,56,.96),rgba(18,20,25,.97));
+  border:1px solid rgba(225,204,151,.17);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 24px 55px rgba(0,0,0,.56);
+  backdrop-filter:blur(22px) saturate(120%);
+}
+.nav label{cursor:pointer;text-align:center;color:#9e9da0;font-size:9px;font-weight:700;border-radius:15px;padding:5px 2px}
+.nav svg{width:22px;height:22px;display:block;margin:0 auto 3px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav .home{width:58px;height:58px;margin:-25px auto -2px;border-radius:50%;display:grid;place-items:center;padding:7px 3px;color:var(--gold-hi);background:radial-gradient(circle at 50% 12%,rgba(225,201,141,.18),transparent 46%),linear-gradient(180deg,#32353c,#17191e);border:1px solid rgba(225,201,141,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 17px 34px rgba(0,0,0,.52)}
+.nav .home svg{width:28px;height:28px;margin:0}
+.nav .home span{font-size:8px;margin-top:-1px}
+#tab-home:checked ~ .nav .home,
+#tab-debt:checked ~ .nav label[for=tab-debt],
+#tab-savings:checked ~ .nav label[for=tab-savings],
+#tab-insights:checked ~ .nav label[for=tab-insights],
+#tab-goals:checked ~ .nav label[for=tab-goals]{color:var(--gold-hi)}
+#tab-debt:checked ~ .nav label[for=tab-debt],
+#tab-savings:checked ~ .nav label[for=tab-savings],
+#tab-insights:checked ~ .nav label[for=tab-insights],
+#tab-goals:checked ~ .nav label[for=tab-goals]{background:rgba(200,170,103,.08);border:1px solid rgba(200,170,103,.12)}
+@media(max-width:380px){.shell{padding-left:11px;padding-right:11px}.value{font-size:24px}.brand h1{font-size:31px}.card{padding:14px}.nav{width:calc(100% - 18px)}}
+
+/* Freedom Countdown v1.5 — animated savings */
+.brand h1{
+  font-size:31px;
+  letter-spacing:-.045em;
+}
+.piggy-anim svg{
+  overflow:visible;
+}
+.piggy-anim .coin{
+  transform-origin:12px 3px;
+  animation:coinPop 2.2s ease-in-out infinite;
+}
+.piggy-anim .pig-body{
+  transform-origin:center;
+  animation:pigBreathe 2.2s ease-in-out infinite;
+}
+@keyframes coinPop{
+  0%,18%{transform:translateY(-4px);opacity:0}
+  30%{opacity:1}
+  58%{transform:translateY(6px);opacity:1}
+  75%,100%{transform:translateY(6px);opacity:0}
+}
+@keyframes pigBreathe{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.035)}
+}
+
+.savings-hero{
+  display:grid;
+  grid-template-columns:118px 1fr;
+  gap:14px;
+  align-items:center;
+  min-height:142px;
+  border-color:rgba(225,201,141,.24);
+  background:
+    radial-gradient(circle at 18% 22%,rgba(225,201,141,.13),transparent 34%),
+    linear-gradient(145deg,rgba(44,46,53,.98),rgba(17,19,23,.98));
+}
+.piggy-stage{
+  position:relative;
+  height:112px;
+  display:grid;
+  place-items:end center;
+}
+.piggy-large{
+  width:112px;
+  filter:drop-shadow(0 14px 18px rgba(0,0,0,.38));
+  animation:pigFloat 3s ease-in-out infinite;
+}
+.coin-drop{
+  position:absolute;
+  top:0;
+  left:50%;
+  width:24px;
+  height:24px;
+  margin-left:-12px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:12px;
+  font-weight:900;
+  color:#16130d;
+  background:linear-gradient(145deg,#f0dcaa,#b58d46);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 8px 14px rgba(0,0,0,.28);
+  animation:coinDrop 2.6s ease-in infinite;
+}
+.coin-two{
+  left:68%;
+  animation-delay:1.3s;
+  transform:scale(.82);
+}
+@keyframes coinDrop{
+  0%{transform:translateY(-12px) rotate(0);opacity:0}
+  15%{opacity:1}
+  72%{transform:translateY(55px) rotate(220deg);opacity:1}
+  82%,100%{transform:translateY(62px) rotate(260deg);opacity:0}
+}
+@keyframes pigFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+@media (prefers-reduced-motion: reduce){
+  .piggy-anim .coin,
+  .piggy-anim .pig-body,
+  .coin-drop,
+  .piggy-large{animation:none !important}
+}
+
+
+/* Typography refinement v1.8.3 */
+.brand h1{
+  font-size:36px !important;
+  font-weight:900 !important;
+  letter-spacing:-0.06em !important;
+  line-height:1;
+}
+.brand p{
+  font-size:13px !important;
+  color:#b0aca3 !important;
+  letter-spacing:.02em;
+}
+.value{
+  font-size:32px !important;
+  font-weight:900 !important;
+  letter-spacing:-0.05em;
+}
+.mission-title{
+  font-size:24px !important;
+  font-weight:900 !important;
+  letter-spacing:-0.04em;
+}
+.page-title{
+  font-size:28px !important;
+  font-weight:900 !important;
+}
+.label,.section-kicker{
+  font-size:11px !important;
+  letter-spacing:.12em !important;
+}
+.meta{
+  font-size:12px !important;
+  color:#b4b0a8 !important;
+}
+.debt-name{
+  font-size:14px !important;
+  font-weight:800 !important;
+}
+.debt-amount{
+  font-size:16px !important;
+  font-weight:900 !important;
+}
+.quick b,strong{
+  letter-spacing:-.02em;
+}
+
+
+/* v1.8.3 Slim Typography */
+.brand h1{
+  font-size:34px !important;
+  font-weight:700 !important;
+  letter-spacing:-0.045em !important;
+}
+.value{
+  font-size:30px !important;
+  font-weight:700 !important;
+  letter-spacing:-0.035em !important;
+}
+.mission-title{
+  font-size:22px !important;
+  font-weight:700 !important;
+}
+.page-title{
+  font-size:26px !important;
+  font-weight:700 !important;
+}
+.debt-name{
+  font-weight:600 !important;
+}
+.debt-amount{
+  font-size:15px !important;
+  font-weight:700 !important;
+}
+.label,.section-kicker{
+  font-weight:600 !important;
+  letter-spacing:.08em !important;
+}
+.meta{
+  font-weight:400 !important;
+}
+.quick b,strong{
+  font-weight:600 !important;
+}
+
+
+/* v1.8.3 Working Updates */
+.save-button{
+  width:100%;
+  margin-top:13px;
+  border:1px solid rgba(225,201,141,.34);
+  border-radius:14px;
+  padding:12px 14px;
+  color:#17130b;
+  font-weight:700;
+  font-size:13px;
+  background:linear-gradient(145deg,#ead6a3,#b78f49);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),0 10px 24px rgba(0,0,0,.30);
+  cursor:pointer;
+}
+.save-button:active{transform:translateY(1px)}
+.save-status{
+  min-height:18px;
+  margin-top:8px;
+  text-align:center;
+  font-size:10px;
+  color:var(--emerald);
+}
+.history-card{margin-top:10px}
+.text-button{
+  border:0;
+  background:transparent;
+  color:var(--gold-hi);
+  font-size:10px;
+  font-weight:600;
+  cursor:pointer;
+  padding:6px;
+}
+.history-list{margin-top:10px}
+.history-entry{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  padding:9px 0;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.history-entry:first-child{border-top:0}
+.history-entry strong{font-size:11px;font-weight:600}
+.history-entry span{font-size:9px;color:var(--muted)}
+
+
+/* v1.8.3 payment workflow */
+.mode-switch{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  padding:5px;
+  margin-bottom:12px;
+  border-radius:14px;
+  background:#0f1116;
+  border:1px solid rgba(255,255,255,.07);
+}
+.mode-button{
+  border:0;
+  border-radius:10px;
+  padding:9px 8px;
+  color:var(--muted);
+  background:transparent;
+  font-size:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+.mode-button.active{
+  color:#17130b;
+  background:linear-gradient(145deg,#ead6a3,#b78f49);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 15px rgba(0,0,0,.24);
+}
+.update-note{
+  padding:10px 11px;
+  margin-bottom:10px;
+  border-radius:12px;
+  color:#c4beb1;
+  background:rgba(200,170,103,.07);
+  border:1px solid rgba(200,170,103,.14);
+  font-size:10px;
+  line-height:1.45;
+}
+.progress-report{margin-top:10px}
+.report-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:10px;
+}
+.report-item{
+  padding:10px;
+  border-radius:13px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.06);
+}
+.report-item span{
+  display:block;
+  font-size:8px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.07em;
+}
+.report-item strong{
+  display:block;
+  margin-top:4px;
+  font-size:13px;
+  font-weight:600;
+}
+.report-positive{color:var(--emerald)}
+.report-neutral{color:var(--gold-hi)}
+
+
+/* v1.8.3 savings graphic and tab fix */
+.savings-plan-card{
+  border-color:rgba(158,130,255,.20);
+  background:
+    radial-gradient(circle at 16% 16%,rgba(158,130,255,.10),transparent 34%),
+    linear-gradient(145deg,rgba(42,45,54,.96),rgba(18,20,25,.98) 72%);
+}
+.savings-visual{
+  display:grid;
+  grid-template-columns:126px 1fr;
+  gap:16px;
+  align-items:center;
+  margin-top:7px;
+}
+.allocation-ring{
+  position:relative;
+  width:120px;
+  height:120px;
+}
+.allocation-ring svg{
+  width:120px;
+  height:120px;
+  transform:rotate(-90deg);
+  overflow:visible;
+  filter:drop-shadow(0 12px 18px rgba(0,0,0,.28));
+}
+.ring-track,
+.ring-segment{
+  fill:none;
+  stroke-width:13;
+}
+.ring-track{stroke:#272a31}
+.ring-segment{
+  stroke-linecap:butt;
+  stroke-dasharray:282.743;
+}
+.trip-segment{
+  stroke:#9e82ff;
+  stroke-dasharray:113.097 169.646;
+  stroke-dashoffset:0;
+}
+.zip-segment{
+  stroke:#c8aa67;
+  stroke-dasharray:90.478 192.265;
+  stroke-dashoffset:-113.097;
+}
+.christmas-segment{
+  stroke:#52d98a;
+  stroke-dasharray:79.168 203.575;
+  stroke-dashoffset:-203.575;
+}
+.ring-centre{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-content:center;
+  text-align:center;
+  pointer-events:none;
+}
+.ring-centre strong{
+  font-size:17px;
+  font-weight:600;
+  color:var(--ink);
+}
+.ring-centre span{
+  margin-top:2px;
+  font-size:8px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.allocation-legend{
+  display:grid;
+  gap:10px;
+}
+.legend-row{
+  display:grid;
+  grid-template-columns:10px 1fr;
+  gap:8px;
+  align-items:center;
+}
+.legend-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  box-shadow:0 0 10px currentColor;
+}
+.trip-dot{background:#9e82ff;color:#9e82ff}
+.zip-dot{background:#c8aa67;color:#c8aa67}
+.christmas-dot{background:#52d98a;color:#52d98a}
+.legend-row strong{
+  display:block;
+  font-size:11px;
+  font-weight:600;
+}
+.legend-row small{
+  display:block;
+  margin-top:2px;
+  font-size:9px;
+  color:var(--muted);
+}
+.graphic-caption{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.06);
+  color:#bbb5aa;
+  font-size:10px;
+  line-height:1.45;
+}
+@media(max-width:370px){
+  .savings-visual{
+    grid-template-columns:108px 1fr;
+    gap:10px;
+  }
+  .allocation-ring,
+  .allocation-ring svg{
+    width:104px;
+    height:104px;
+  }
+}
+
+
+/* v1.8.3 Family Cashflow */
+.nav{
+  grid-template-columns:repeat(6,1fr);
+}
+.nav label{
+  font-size:8px;
+}
+.nav svg{
+  width:20px;
+  height:20px;
+}
+#tab-family:checked ~ .nav label[for=tab-family]{
+  color:var(--gold-hi);
+  background:rgba(200,170,103,.08);
+  border:1px solid rgba(200,170,103,.12);
+}
+
+.family-summary-grid{margin-bottom:11px}
+.family-income-card{
+  background:
+    radial-gradient(circle at 88% 12%,rgba(82,217,138,.14),transparent 34%),
+    linear-gradient(145deg,rgba(42,45,54,.96),rgba(18,20,25,.98));
+}
+.family-expense-card{
+  background:
+    radial-gradient(circle at 88% 12%,rgba(226,117,127,.13),transparent 34%),
+    linear-gradient(145deg,rgba(42,45,54,.96),rgba(18,20,25,.98));
+}
+.family-positive{color:var(--emerald)}
+.family-negative{color:#ef9da5}
+.family-balance-card{margin-bottom:11px}
+.family-balance-icon{
+  width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+  color:var(--gold-hi);background:rgba(200,170,103,.10);
+  border:1px solid rgba(200,170,103,.20);
+}
+.family-balance-icon svg{
+  width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round;
+}
+.field select{
+  width:100%;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#0f1116;
+  color:var(--ink);
+  padding:11px;
+  font-size:14px;
+}
+.family-entry-panel{margin-bottom:11px}
+.family-category-breakdown{margin-top:10px}
+.category-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  padding:8px 0;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.category-row:first-child{border-top:0}
+.category-info strong{display:block;font-size:11px;font-weight:600}
+.category-info span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+.category-amount{font-size:11px;font-weight:600}
+.category-bar{
+  grid-column:1/-1;height:5px;border-radius:999px;background:#292c33;overflow:hidden;
+}
+.category-bar span{
+  display:block;height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi));
+}
+.family-history-card{margin-top:11px}
+.family-transaction{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  gap:9px;
+  align-items:center;
+  padding:10px 0;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.family-transaction:first-child{border-top:0}
+.family-transaction strong{display:block;font-size:11px;font-weight:600}
+.family-transaction small{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+.family-transaction .tx-amount{font-size:11px;font-weight:600}
+.family-transaction .tx-income{color:var(--emerald)}
+.family-transaction .tx-expense{color:#ef9da5}
+.delete-transaction{
+  border:0;background:transparent;color:#8f8d88;padding:4px;font-size:13px;cursor:pointer;
+}
+@media(max-width:390px){
+  .nav label{font-size:7px;padding-left:1px;padding-right:1px}
+  .nav svg{width:18px;height:18px}
+}
+
+
+/* v1.8.3 reliable transaction type control */
+#familyType{
+  appearance:auto;
+  -webkit-appearance:menulist;
+  background:#0f1116;
+  color:var(--ink);
+  font-weight:600;
+}
+
+</style>
+</head>
+<body>
+<input class="tab-radio" type="radio" name="tabs" id="tab-home" checked>
+<input class="tab-radio" type="radio" name="tabs" id="tab-debt">
+<input class="tab-radio" type="radio" name="tabs" id="tab-savings">
+<input class="tab-radio" type="radio" name="tabs" id="tab-insights">
+<input class="tab-radio" type="radio" name="tabs" id="tab-goals">
+<input class="tab-radio" type="radio" name="tabs" id="tab-family">
+
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">
+      <h1>Freedom Countdown</h1>
+      <p>One clean payment at a time.</p>
+    </div>
+  </div>
+
+  <main>
+    <section id="home" class="view">
+      <div class="section-kicker">Overview</div>
+      <div class="grid2">
+        <div class="card metric-card debt">
+          <div class="metric-icon red"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9h18M7 15h4"/></svg></div>
+          <div class="label">Consumer debt</div>
+          <div class="value" id="homeConsumerDebt">$34,367</div>
+          <div class="meta">Cards + Zip</div>
+        </div>
+        <div class="card metric-card fund">
+          <div class="metric-icon green piggy-anim" aria-label="Animated piggy bank">
+  <svg viewBox="0 0 24 24">
+    <path class="pig-body" d="M5 11c0-3.5 3-6 7-6 3.2 0 5.7 1.3 7 3.6h2v4h-2.1c-.6 1.4-1.7 2.6-3.2 3.3V19h-3v-2h-3v2h-3v-3.1C5.6 14.7 5 13 5 11Z"/>
+    <circle cx="15.7" cy="9.2" r="0.8"/>
+    <path d="M8.2 6.1 7 3.9l3 .7M4.8 10H3"/>
+    <path class="coin" d="M12 1.7v3.1M10.5 3.2h3"/>
+  </svg>
+</div>
+          <div class="label">Freedom Fund</div>
+          <div class="value" id="homeFreedomFund" style="color:var(--emerald)">$0</div>
+          <div class="meta">Goal $5,000</div>
+        </div>
+      </div>
+
+      <div class="card mission">
+        <div class="row"><div class="label">Consumer Debt Progress</div><div class="badge" id="consumerProgressBadge">4.5% Complete</div></div>
+        <div class="mission-title" id="consumerPaidOff">$1,619 Paid Off</div>
+        <div class="track"><div class="fill goldfill" id="consumerProgressBar" style="width:4.5%"></div></div>
+        <div class="meta" id="consumerProgressMeta">$34,367 remaining from original $35,985.64</div>
+      </div>
+
+      <div class="insight-grid">
+        <div class="card feature-card">
+          <div class="feature-icon purple"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="m15 9 4-4"/></svg></div>
+          <div class="label">Savings milestone</div>
+          <div class="feature-main purple" id="nextSavingsMilestone">$1,000</div>
+          <div class="meta">First checkpoint</div>
+        </div>
+        <div class="card feature-card">
+          <div class="feature-icon green"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div class="label">Next debt milestone</div>
+          <div class="feature-main green">Zip Money</div>
+          <div class="meta">$2,509 • Jan 2027</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:11px">
+<div class="section-kicker">Journey</div>
+
+<div class="data-row"><span>Progress</span><strong>4.5%</strong></div>
+<div class="data-row"><span>Debt repaid</span><strong>$1,619</strong></div>
+</div>
+<div class="milestones">
+        <div class="mini"><div class="icon-disc blue"><svg viewBox="0 0 24 24"><path d="M4 17h16M6 15c2.5-5.5 9.5-5.5 12 0M12 9V4M9 6h6"/></svg></div><strong>Esperance</strong><small>26 Nov 2026</small></div>
+        <div class="mini"><div class="icon-disc gold"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9h18"/></svg></div><strong>Zip Money</strong><small>Jan 2027</small></div>
+        <div class="mini"><div class="icon-disc green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></div><strong>Zip-free</strong><small>May 2027</small></div>
+      </div>
+
+      <div class="quickbar">
+        <div class="quick"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg><b>Next</b><span>Pay minimums</span></div>
+        <div class="quick"><svg viewBox="0 0 24 24"><path d="m7 12 3 3 7-8"/></svg><b>Focus</b><span>Zip Money</span></div>
+        <div class="quick"><svg viewBox="0 0 24 24"><path d="M7 4h10v5a5 5 0 0 1-10 0zM9 18h6M12 14v4"/></svg><b>Journey</b><span>Started • Date TBD</span></div>
+      </div>
+    </section>
+
+    <section id="debt" class="view">
+      <div class="page-title">Debt Centre</div>
+      <div class="stack">
+        <div class="card">
+          <div class="section-kicker">Consumer debt</div>
+          <div class="debt-row"><div><div class="debt-name">Credit Card 1</div><div class="debt-sub">9.99% p.a. • $459.95/month</div></div><div class="debt-amount" id="cc1Debt">$9,209</div></div>
+          <div class="debt-row"><div><div class="debt-name">Credit Card 2</div><div class="debt-sub">13.99% p.a. • $686/month</div></div><div class="debt-amount" id="cc2Debt">$18,803</div></div>
+          <div class="debt-row"><div><div class="debt-name">Zip Plus</div><div class="debt-sub">13.7% p.a. • $300/month</div></div><div class="debt-amount" id="zipPlusDebt">$3,846</div></div>
+          <div class="debt-row"><div><div class="debt-name">Zip Money</div><div class="debt-sub">Interest-free currently • $40/week</div></div><div class="debt-amount" id="zipMoneyDebt">$2,509</div></div>
+        </div>
+        <div class="card vehicle">
+          <div class="row"><div><div class="section-kicker" style="margin:0">Vehicle finance</div><div class="mission-title" style="font-size:18px">Car loan</div></div><span class="badge">$151.17/week</span></div>
+          <div class="data-row"><span class="meta">Current balance</span><strong id="carDebt">$27,617.56</strong></div>
+          <div class="track"><div class="fill goldfill" id="carProgressBar" style="width:21.6%"></div></div>
+          <div class="meta" id="carProgressMeta">$7,603.44 repaid • 21.6% complete</div><div class="data-row"><span>Weekly payment</span><strong>$151.17/week</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="savings" class="view">
+      <div class="page-title">Savings</div>
+      <div class="stack">
+        <div class="card savings-hero">
+          <div class="piggy-stage" aria-hidden="true">
+            <div class="coin-drop coin-one">$</div>
+            <div class="coin-drop coin-two">$</div>
+            <svg class="piggy-large" viewBox="0 0 160 120">
+              <defs>
+                <linearGradient id="pigGold" x1="0" x2="1">
+                  <stop offset="0" stop-color="#8c6e33"/>
+                  <stop offset="0.52" stop-color="#e1c98d"/>
+                  <stop offset="1" stop-color="#b58d46"/>
+                </linearGradient>
+              </defs>
+              <path d="M31 60c0-23 21-41 49-41 21 0 38 8 48 23h14v22h-14c-5 11-14 20-27 25v18H82V94H63v13H44V86C36 79 31 70 31 60Z" fill="url(#pigGold)"/>
+              <circle cx="107" cy="48" r="4" fill="#111318"/>
+              <path d="M51 27 42 11l21 5M30 55H17" fill="none" stroke="#e1c98d" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M67 18h28" stroke="#111318" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="section-kicker">Savings engine</div>
+            <div class="mission-title">Build the Freedom Fund</div>
+            <div class="meta">Every deposit moves the countdown forward.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-kicker">Freedom Fund</div>
+          <div class="value" id="savingsFreedomFund" style="color:var(--emerald)">$0</div>
+          <div class="track"><div class="fill greenfill" id="savingsProgressBar" style="width:0%"></div></div>
+          <div class="meta">Target by 30 December 2026: $5,000</div>
+        </div>
+        <div class="card">
+          <div class="data-row"><span>Esperance trip</span><strong>$2,000</strong></div>
+          <div class="data-row"><span>Zip Money reserve</span><strong>$1,600</strong></div>
+          <div class="data-row"><span>Christmas / New Year</span><strong>$1,400</strong></div>
+        </div>
+
+        <div class="card savings-plan-card">
+          <div class="section-kicker">Planned $5,000 allocation</div>
+          <div class="savings-visual">
+            <div class="allocation-ring" aria-label="Savings allocation chart">
+              <svg viewBox="0 0 120 120" role="img">
+                <circle class="ring-track" cx="60" cy="60" r="45"></circle>
+                <circle class="ring-segment trip-segment" cx="60" cy="60" r="45"></circle>
+                <circle class="ring-segment zip-segment" cx="60" cy="60" r="45"></circle>
+                <circle class="ring-segment christmas-segment" cx="60" cy="60" r="45"></circle>
+              </svg>
+              <div class="ring-centre">
+                <strong>$5,000</strong>
+                <span>planned</span>
+              </div>
+            </div>
+
+            <div class="allocation-legend">
+              <div class="legend-row">
+                <span class="legend-dot trip-dot"></span>
+                <div><strong>Esperance</strong><small>40% · $2,000</small></div>
+              </div>
+              <div class="legend-row">
+                <span class="legend-dot zip-dot"></span>
+                <div><strong>Zip reserve</strong><small>32% · $1,600</small></div>
+              </div>
+              <div class="legend-row">
+                <span class="legend-dot christmas-dot"></span>
+                <div><strong>Christmas</strong><small>28% · $1,400</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="graphic-caption">
+            Your first $5,000 has three jobs: fund Esperance, protect the Zip Money payoff, and cover Christmas and New Year spending.
+          </div>
+        </div>
+        
+
+<details class="update" id="updatePanel">
+  <summary>Record monthly progress</summary>
+  <div class="update-body">
+
+    <div class="mode-switch" role="tablist" aria-label="Update method">
+      <button class="mode-button active" id="paymentModeButton" type="button" onclick="switchUpdateMode('payments')">Enter payments</button>
+      <button class="mode-button" id="balanceModeButton" type="button" onclick="switchUpdateMode('balances')">Reconcile balances</button>
+    </div>
+
+    <div id="paymentMode">
+      <div class="update-note">
+        Enter what you paid. Freedom Countdown estimates interest for the period and calculates the new balances.
+      </div>
+
+      <div class="field"><label>Update date</label><input id="paymentDate" type="date"></div>
+      <div class="field"><label>Freedom Fund deposit</label><input id="paymentFund" value="0" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Credit Card 1 payment</label><input id="paymentCc1" value="0" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Credit Card 2 payment</label><input id="paymentCc2" value="0" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Zip Plus payment</label><input id="paymentZipPlus" value="0" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Zip Money payment</label><input id="paymentZipMoney" value="0" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Car-loan payment</label><input id="paymentCar" value="0" type="number" min="0" step="0.01"></div>
+
+      <button class="save-button" id="applyPayments" type="button">Calculate and save</button>
+      <div class="save-status" id="paymentStatus" aria-live="polite"></div>
+    </div>
+
+    <div id="balanceMode" hidden>
+      <div class="update-note">
+        Use statement balances to correct estimates. Statement balances remain the most accurate source.
+      </div>
+
+      <div class="field"><label>Freedom Fund balance</label><input id="inputFund" value="0" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Credit Card 1 balance</label><input id="inputCc1" value="9209.08" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Credit Card 2 balance</label><input id="inputCc2" value="18803" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Zip Plus balance</label><input id="inputZipPlus" value="3846" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Zip Money balance</label><input id="inputZipMoney" value="2509" type="number" min="0" step="0.01"></div>
+      <div class="field"><label>Car-loan balance</label><input id="inputCar" value="27617.56" type="number" min="0" step="0.01"></div>
+
+      <button class="save-button" id="saveBalances" type="button">Save statement balances</button>
+      <div class="save-status" id="saveStatus" aria-live="polite"></div>
+    </div>
+  </div>
+</details>
+
+<div class="card progress-report" id="progressReport">
+  <div class="section-kicker">Latest progress report</div>
+  <div class="meta">Save an update to generate your report.</div>
+</div>
+
+<div class="card history-card">
+  <div class="row">
+    <div>
+      <div class="section-kicker" style="margin:0">Update history</div>
+      <div class="meta">Saved only on this device</div>
+    </div>
+    <button class="text-button" id="clearHistory" type="button">Clear</button>
+  </div>
+  <div id="historyList" class="history-list">
+    <div class="meta">No updates saved yet.</div>
+  </div>
+</div>
+
+      </div>
+    </section>
+
+
+    <section id="family" class="view">
+      <div class="page-title">Family Cashflow</div>
+
+      <div class="grid2 family-summary-grid">
+        <div class="card family-income-card">
+          <div class="label">Income this month</div>
+          <div class="value family-positive" id="familyIncomeTotal">$0</div>
+          <div class="meta">Pay and other income</div>
+        </div>
+        <div class="card family-expense-card">
+          <div class="label">Expenses this month</div>
+          <div class="value family-negative" id="familyExpenseTotal">$0</div>
+          <div class="meta">Every family expense</div>
+        </div>
+      </div>
+
+      <div class="card family-balance-card">
+        <div class="row">
+          <div>
+            <div class="label">Family cash remaining</div>
+            <div class="value" id="familyBalanceTotal">$0</div>
+          </div>
+          <div class="family-balance-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16v11H4zM7 7V5h10v2M8 12h8M8 15h5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="meta" id="familyMonthLabel">Current month</div>
+      </div>
+
+      <details class="update family-entry-panel" open>
+        <summary>Add income or expense</summary>
+        <div class="update-body">
+          <div class="field">
+            <label>Transaction type</label>
+            <select id="familyType">
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Date</label>
+            <input id="familyDate" type="date">
+          </div>
+
+          <div class="field">
+            <label>Category</label>
+            <select id="familyCategory">
+              <option>Pay</option>
+              <option>Bonus</option>
+              <option>Groceries</option>
+              <option>Fuel</option>
+              <option>Rent</option>
+              <option>Bills</option>
+              <option>Airport parking</option>
+              <option>Entertainment</option>
+              <option>Travel</option>
+              <option>Family</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Amount</label>
+            <input id="familyAmount" type="number" min="0" step="0.01" placeholder="0.00">
+          </div>
+
+          <div class="field">
+            <label>Description</label>
+            <input id="familyDescription" type="text" placeholder="Optional note">
+          </div>
+
+          <button class="save-button" id="addFamilyTransaction" type="button" onclick="addFamilyTransactionNow()">Add income</button>
+          <div class="save-status" id="familySaveStatus" aria-live="polite"></div>
+        </div>
+      </details>
+
+      <div class="card family-breakdown-card">
+        <div class="row">
+          <div>
+            <div class="section-kicker" style="margin:0">This month</div>
+            <div class="meta">Expense breakdown</div>
+          </div>
+          <button class="text-button" id="clearFamilyTransactions" type="button">Clear all</button>
+        </div>
+        <div id="familyCategoryBreakdown" class="family-category-breakdown">
+          <div class="meta">No expenses recorded yet.</div>
+        </div>
+      </div>
+
+      <div class="card family-history-card">
+        <div class="section-kicker">Recent transactions</div>
+        <div id="familyTransactionList">
+          <div class="meta">No transactions recorded yet.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="insights" class="view">
+      <div class="page-title">Insights</div>
+      <div class="stack">
+        <div class="card">
+          <div class="section-kicker">Monthly commitments</div>
+          <div class="data-row"><span id="insightCc1Label">Credit Card 1 • $9,209</span><strong>$459.95</strong></div>
+          <div class="data-row"><span id="insightCc2Label">Credit Card 2 • $18,803</span><strong>$686</strong></div>
+          <div class="data-row"><span id="insightZipPlusLabel">Zip Plus • $3,846</span><strong>$300</strong></div>
+          <div class="data-row"><span id="insightZipMoneyLabel">Zip Money • $2,509</span><strong>~$173</strong></div>
+          <div class="data-row"><span style="color:var(--gold-hi)">Consumer total</span><strong style="color:var(--gold-hi)">~$1,619/mo</strong></div>
+        </div>
+        <div class="card"><div class="label">Car repayment</div><div class="value">$151/wk</div><div class="meta">Vehicle finance</div></div>
+        <div class="card">
+          <div class="section-kicker">Payoff timeline</div>
+          <div class="data-row"><span>1. Zip Money</span><strong>$2,509 • Jan 2027</strong></div>
+          <div class="data-row"><span>2. Zip Plus</span><strong>$3,846 • May 2027</strong></div>
+          <div class="data-row"><span>3. Credit Card 1</span><strong>$9,209 • Mar 2028</strong></div>
+          <div class="data-row"><span>4. Credit Card 2</span><strong>$18,803 • Dec 2028</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="goals" class="view">
+      <div class="page-title">Mission Control</div>
+      <div class="stack">
+        <div class="card"><div class="data-row"><span>Esperance trip</span><strong>26 Nov 2026</strong></div><div class="meta">$2,000 planned from the Freedom Fund</div></div>
+        <div class="card"><div class="data-row"><span>Zip Money cleared</span><strong>14 Jan 2027</strong></div><div class="meta">$2,509 remaining</div></div>
+        <div class="card"><div class="data-row"><span>Become Zip-free</span><strong>May 2027</strong></div><div class="meta">Zip Money + Zip Plus both cleared</div></div>
+        <div class="card"><div class="data-row"><span>2027 holiday</span><strong>April bonus</strong></div><div class="meta">Separate from the debt plan</div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="nav">
+  <label for="tab-debt"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9h18M7 15h4"/></svg>Debt</label>
+  <label for="tab-savings"><svg viewBox="0 0 24 24"><path d="M5 10.5c0-3.6 3.2-6.5 7-6.5s7 2.9 7 6.5v3.2c0 3.5-2.9 6.3-6.4 6.3h-1.2C7.9 20 5 17.2 5 13.7z"/><circle cx="12" cy="10" r="2.2"/></svg>Savings</label>
+  <label for="tab-home" class="home"><svg viewBox="0 0 24 24"><path d="m3 11 9-7 9 7"/><path d="M5.5 10.5V20h13v-9.5M9 20v-6h6v6"/></svg><span>Home</span></label>
+  <label for="tab-family"><svg viewBox="0 0 24 24"><path d="M4 7h16v11H4zM7 7V5h10v2M8 12h8M8 15h5"/></svg>Family</label>
+  <label for="tab-insights"><svg viewBox="0 0 24 24"><path d="M4 19V10M10 19V5M16 19v-7M22 19V3"/></svg>Insights</label>
+  <label for="tab-goals"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="m15.5 8.5 4-4M16 4.5h3.5V8"/></svg>Goals</label>
+</nav>
+
+
+
+
+<script>
+function switchUpdateMode(mode){
+  var paymentMode = document.getElementById("paymentMode");
+  var balanceMode = document.getElementById("balanceMode");
+  var paymentButton = document.getElementById("paymentModeButton");
+  var balanceButton = document.getElementById("balanceModeButton");
+
+  if(!paymentMode || !balanceMode || !paymentButton || !balanceButton) return;
+
+  var showPayments = mode === "payments";
+  paymentMode.hidden = !showPayments;
+  balanceMode.hidden = showPayments;
+  paymentButton.classList.toggle("active", showPayments);
+  balanceButton.classList.toggle("active", !showPayments);
+}
+
+(function(){
+  "use strict";
+
+  const ORIGINAL = {
+    consumerDebt: 35985.64,
+    car: 35221.00,
+    savingsGoal: 5000
+  };
+
+  const RATES = {
+    cc1: 9.99,
+    cc2: 13.99,
+    zipPlus: 13.7,
+    zipMoney: 0,
+    car: 13.0
+  };
+
+  const DEFAULTS = {
+    fund: 0,
+    cc1: 9209.08,
+    cc2: 18803,
+    zipPlus: 3846,
+    zipMoney: 2509,
+    car: 27617.56,
+    updatedAt: null,
+    history: [],
+    latestReport: null
+  };
+
+  const money0 = value => new Intl.NumberFormat("en-AU",{
+    style:"currency",currency:"AUD",maximumFractionDigits:0
+  }).format(Number(value || 0));
+
+  const money2 = value => new Intl.NumberFormat("en-AU",{
+    style:"currency",currency:"AUD",minimumFractionDigits:2,maximumFractionDigits:2
+  }).format(Number(value || 0));
+
+  function load(){
+    try{
+      return Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem("freedomCountdownData") || "{}"));
+    }catch(e){
+      return {...DEFAULTS};
+    }
+  }
+
+  let data = load();
+
+  function save(){
+    localStorage.setItem("freedomCountdownData", JSON.stringify(data));
+  }
+
+  function setText(id, value){
+    const node = document.getElementById(id);
+    if(node) node.textContent = value;
+  }
+
+  function setWidth(id, value){
+    const node = document.getElementById(id);
+    if(node) node.style.width = Math.max(0, Math.min(100, value)) + "%";
+  }
+
+  function consumerTotal(state){
+    return state.cc1 + state.cc2 + state.zipPlus + state.zipMoney;
+  }
+
+  function daysBetween(fromIso, toIso){
+    if(!fromIso) return 30;
+    const from = new Date(fromIso);
+    const to = new Date(toIso);
+    const days = Math.round((to - from) / 86400000);
+    return Math.max(1, days);
+  }
+
+  function estimatedInterest(balance, apr, days){
+    return balance * (apr / 100) * (days / 365);
+  }
+
+  function render(){
+    const consumer = consumerTotal(data);
+    const consumerPaid = Math.max(0, ORIGINAL.consumerDebt - consumer);
+    const consumerPct = ORIGINAL.consumerDebt > 0 ? consumerPaid / ORIGINAL.consumerDebt * 100 : 0;
+
+    const carPaid = Math.max(0, ORIGINAL.car - data.car);
+    const carPct = ORIGINAL.car > 0 ? carPaid / ORIGINAL.car * 100 : 0;
+    const savingsPct = ORIGINAL.savingsGoal > 0 ? data.fund / ORIGINAL.savingsGoal * 100 : 0;
+
+    setText("homeConsumerDebt", money0(consumer));
+    setText("homeFreedomFund", money0(data.fund));
+    setText("consumerProgressBadge", consumerPct.toFixed(1) + "% Complete");
+    setText("consumerPaidOff", money0(consumerPaid) + " Paid Off");
+    setText("consumerProgressMeta", money0(consumer) + " remaining from original " + money2(ORIGINAL.consumerDebt));
+    setWidth("consumerProgressBar", consumerPct);
+
+    setText("cc1Debt", money0(data.cc1));
+    setText("cc2Debt", money0(data.cc2));
+    setText("zipPlusDebt", money0(data.zipPlus));
+    setText("zipMoneyDebt", money0(data.zipMoney));
+
+    setText("carDebt", money2(data.car));
+    setWidth("carProgressBar", carPct);
+    setText("carProgressMeta", money2(carPaid) + " repaid • " + carPct.toFixed(1) + "% complete");
+
+    setText("savingsFreedomFund", money0(data.fund));
+    setWidth("savingsProgressBar", savingsPct);
+
+    setText("insightCc1Label", "Credit Card 1 • " + money0(data.cc1));
+    setText("insightCc2Label", "Credit Card 2 • " + money0(data.cc2));
+    setText("insightZipPlusLabel", "Zip Plus • " + money0(data.zipPlus));
+    setText("insightZipMoneyLabel", "Zip Money • " + money0(data.zipMoney));
+
+    document.getElementById("inputFund").value = data.fund;
+    document.getElementById("inputCc1").value = data.cc1;
+    document.getElementById("inputCc2").value = data.cc2;
+    document.getElementById("inputZipPlus").value = data.zipPlus;
+    document.getElementById("inputZipMoney").value = data.zipMoney;
+    document.getElementById("inputCar").value = data.car;
+
+    const today = new Date().toISOString().slice(0,10);
+    document.getElementById("paymentDate").value = today;
+
+    renderHistory();
+    renderReport();
+  }
+
+  function renderHistory(){
+    const list = document.getElementById("historyList");
+    if(!data.history || data.history.length === 0){
+      list.innerHTML = '<div class="meta">No updates saved yet.</div>';
+      return;
+    }
+
+    list.innerHTML = data.history.slice().reverse().slice(0, 6).map(entry => {
+      const consumer = consumerTotal(entry);
+      const date = new Date(entry.date).toLocaleDateString("en-AU",{
+        day:"numeric",month:"short",year:"numeric"
+      });
+      return '<div class="history-entry">' +
+        '<div><strong>' + date + '</strong><span>Consumer debt ' + money0(consumer) + '</span></div>' +
+        '<div style="text-align:right"><strong>' + money0(entry.fund) + '</strong><span>Freedom Fund</span></div>' +
+      '</div>';
+    }).join("");
+  }
+
+  function renderReport(){
+    const box = document.getElementById("progressReport");
+    if(!data.latestReport){
+      box.innerHTML = '<div class="section-kicker">Latest progress report</div><div class="meta">Save an update to generate your report.</div>';
+      return;
+    }
+
+    const r = data.latestReport;
+    const date = new Date(r.date).toLocaleDateString("en-AU",{
+      day:"numeric",month:"long",year:"numeric"
+    });
+
+    box.innerHTML =
+      '<div class="section-kicker">' + date + ' progress report</div>' +
+      '<div class="report-grid">' +
+        '<div class="report-item"><span>Consumer debt reduced</span><strong class="report-positive">' + money2(r.consumerReduction) + '</strong></div>' +
+        '<div class="report-item"><span>Car loan reduced</span><strong class="report-positive">' + money2(r.carReduction) + '</strong></div>' +
+        '<div class="report-item"><span>Freedom Fund added</span><strong class="report-positive">' + money2(r.fundIncrease) + '</strong></div>' +
+        '<div class="report-item"><span>Estimated interest</span><strong class="report-neutral">' + money2(r.estimatedInterest) + '</strong></div>' +
+        '<div class="report-item"><span>Total payments</span><strong>' + money2(r.totalPayments) + '</strong></div>' +
+        '<div class="report-item"><span>Overall position improved</span><strong class="report-positive">' + money2(r.totalImprovement) + '</strong></div>' +
+      '</div>' +
+      '<div class="meta" style="margin-top:9px">Payment-based balances are estimates. Reconcile with statement balances when available.</div>';
+  }
+
+  function snapshot(date){
+    return {
+      date,
+      fund:data.fund,
+      cc1:data.cc1,
+      cc2:data.cc2,
+      zipPlus:data.zipPlus,
+      zipMoney:data.zipMoney,
+      car:data.car
+    };
+  }
+
+  function pushHistory(date){
+    data.history = Array.isArray(data.history) ? data.history : [];
+    data.history.push(snapshot(date));
+  }
+
+  document.getElementById("paymentModeButton").addEventListener("click", function(){
+    document.getElementById("paymentMode").hidden = false;
+    document.getElementById("balanceMode").hidden = true;
+    this.classList.add("active");
+    document.getElementById("balanceModeButton").classList.remove("active");
+  });
+
+  document.getElementById("balanceModeButton").addEventListener("click", function(){
+    document.getElementById("paymentMode").hidden = true;
+    document.getElementById("balanceMode").hidden = false;
+    this.classList.add("active");
+    document.getElementById("paymentModeButton").classList.remove("active");
+  });
+
+  document.getElementById("applyPayments").addEventListener("click", function(){
+    const dateValue = document.getElementById("paymentDate").value || new Date().toISOString().slice(0,10);
+    const updateIso = new Date(dateValue + "T12:00:00").toISOString();
+    const days = daysBetween(data.updatedAt, updateIso);
+
+    const previous = {...data};
+
+    const payments = {
+      fund:Number(document.getElementById("paymentFund").value || 0),
+      cc1:Number(document.getElementById("paymentCc1").value || 0),
+      cc2:Number(document.getElementById("paymentCc2").value || 0),
+      zipPlus:Number(document.getElementById("paymentZipPlus").value || 0),
+      zipMoney:Number(document.getElementById("paymentZipMoney").value || 0),
+      car:Number(document.getElementById("paymentCar").value || 0)
+    };
+
+    const interest = {
+      cc1:estimatedInterest(data.cc1,RATES.cc1,days),
+      cc2:estimatedInterest(data.cc2,RATES.cc2,days),
+      zipPlus:estimatedInterest(data.zipPlus,RATES.zipPlus,days),
+      zipMoney:0,
+      car:estimatedInterest(data.car,RATES.car,days)
+    };
+
+    data.fund = Math.max(0, data.fund + payments.fund);
+    data.cc1 = Math.max(0, data.cc1 + interest.cc1 - payments.cc1);
+    data.cc2 = Math.max(0, data.cc2 + interest.cc2 - payments.cc2);
+    data.zipPlus = Math.max(0, data.zipPlus + interest.zipPlus - payments.zipPlus);
+    data.zipMoney = Math.max(0, data.zipMoney - payments.zipMoney);
+    data.car = Math.max(0, data.car + interest.car - payments.car);
+    data.updatedAt = updateIso;
+
+    const previousConsumer = consumerTotal(previous);
+    const newConsumer = consumerTotal(data);
+    const consumerReduction = Math.max(0, previousConsumer - newConsumer);
+    const carReduction = Math.max(0, previous.car - data.car);
+    const fundIncrease = Math.max(0, data.fund - previous.fund);
+    const totalPayments = payments.cc1 + payments.cc2 + payments.zipPlus + payments.zipMoney + payments.car;
+    const totalInterest = interest.cc1 + interest.cc2 + interest.zipPlus + interest.car;
+
+    data.latestReport = {
+      date:updateIso,
+      consumerReduction,
+      carReduction,
+      fundIncrease,
+      totalPayments,
+      estimatedInterest:totalInterest,
+      totalImprovement:consumerReduction + carReduction + fundIncrease
+    };
+
+    pushHistory(updateIso);
+    save();
+    render();
+
+    ["paymentFund","paymentCc1","paymentCc2","paymentZipPlus","paymentZipMoney","paymentCar"].forEach(id => {
+      document.getElementById(id).value = 0;
+    });
+
+    const status = document.getElementById("paymentStatus");
+    status.textContent = "Payments applied. Progress report updated.";
+    setTimeout(() => status.textContent = "", 3000);
+  });
+
+  document.getElementById("saveBalances").addEventListener("click", function(){
+    const previous = {...data};
+
+    data.fund = Number(document.getElementById("inputFund").value || 0);
+    data.cc1 = Number(document.getElementById("inputCc1").value || 0);
+    data.cc2 = Number(document.getElementById("inputCc2").value || 0);
+    data.zipPlus = Number(document.getElementById("inputZipPlus").value || 0);
+    data.zipMoney = Number(document.getElementById("inputZipMoney").value || 0);
+    data.car = Number(document.getElementById("inputCar").value || 0);
+    data.updatedAt = new Date().toISOString();
+
+    const consumerReduction = Math.max(0, consumerTotal(previous) - consumerTotal(data));
+    const carReduction = Math.max(0, previous.car - data.car);
+    const fundIncrease = Math.max(0, data.fund - previous.fund);
+
+    data.latestReport = {
+      date:data.updatedAt,
+      consumerReduction,
+      carReduction,
+      fundIncrease,
+      totalPayments:0,
+      estimatedInterest:0,
+      totalImprovement:consumerReduction + carReduction + fundIncrease
+    };
+
+    pushHistory(data.updatedAt);
+    save();
+    render();
+
+    const status = document.getElementById("saveStatus");
+    status.textContent = "Statement balances saved.";
+    setTimeout(() => status.textContent = "", 2600);
+  });
+
+  document.getElementById("clearHistory").addEventListener("click", function(){
+    data.history = [];
+    data.latestReport = null;
+    save();
+    renderHistory();
+    renderReport();
+  });
+
+  render();
+})();
+</script>
+
+
+
+
+
+<script>
+(function(){
+  "use strict";
+
+  const FAMILY_KEY = "freedomCountdownFamilyData";
+
+  window.familyMoney = function(value){
+    return new Intl.NumberFormat("en-AU",{
+      style:"currency",
+      currency:"AUD",
+      minimumFractionDigits:0,
+      maximumFractionDigits:2
+    }).format(Number(value || 0));
+  };
+
+  window.loadFamilyData = function(){
+    try{
+      const parsed = JSON.parse(localStorage.getItem(FAMILY_KEY) || "{}");
+      return {transactions:Array.isArray(parsed.transactions) ? parsed.transactions : []};
+    }catch(error){
+      return {transactions:[]};
+    }
+  };
+
+  window.saveFamilyData = function(data){
+    localStorage.setItem(FAMILY_KEY, JSON.stringify(data));
+  };
+
+  window.escapeFamilyText = function(value){
+    return String(value || "").replace(/[&<>"']/g,function(char){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char];
+    });
+  };
+
+  window.renderFamilyCashflow = function(){
+    const data = loadFamilyData();
+    const now = new Date();
+    const monthKey = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2,"0");
+    const monthly = data.transactions.filter(function(tx){
+      return tx.date && tx.date.slice(0,7) === monthKey;
+    });
+
+    const income = monthly
+      .filter(tx => tx.type === "income")
+      .reduce((sum,tx) => sum + Number(tx.amount || 0),0);
+
+    const expenses = monthly
+      .filter(tx => tx.type === "expense")
+      .reduce((sum,tx) => sum + Number(tx.amount || 0),0);
+
+    const balance = income - expenses;
+
+    document.getElementById("familyIncomeTotal").textContent = familyMoney(income);
+    document.getElementById("familyExpenseTotal").textContent = familyMoney(expenses);
+    document.getElementById("familyBalanceTotal").textContent = familyMoney(balance);
+    document.getElementById("familyBalanceTotal").style.color =
+      balance < 0 ? "#ef9da5" : "var(--gold-hi)";
+    document.getElementById("familyMonthLabel").textContent =
+      new Intl.DateTimeFormat("en-AU",{month:"long",year:"numeric"}).format(now);
+
+    const breakdown = document.getElementById("familyCategoryBreakdown");
+    const expenseRows = monthly.filter(tx => tx.type === "expense");
+
+    if(expenseRows.length === 0){
+      breakdown.innerHTML = '<div class="meta">No expenses recorded yet.</div>';
+    }else{
+      const totals = {};
+      expenseRows.forEach(function(tx){
+        totals[tx.category] = (totals[tx.category] || 0) + Number(tx.amount || 0);
+      });
+
+      const sorted = Object.entries(totals).sort((a,b) => b[1] - a[1]);
+      const maximum = sorted.length ? sorted[0][1] : 0;
+
+      breakdown.innerHTML = sorted.map(function(item){
+        const category = item[0];
+        const total = item[1];
+        const width = maximum > 0 ? total / maximum * 100 : 0;
+
+        return '<div class="category-row">' +
+          '<div class="category-info"><strong>' + escapeFamilyText(category) +
+          '</strong><span>Family spending</span></div>' +
+          '<div class="category-amount">' + familyMoney(total) + '</div>' +
+          '<div class="category-bar"><span style="width:' + width + '%"></span></div>' +
+        '</div>';
+      }).join("");
+    }
+
+    const list = document.getElementById("familyTransactionList");
+
+    if(data.transactions.length === 0){
+      list.innerHTML = '<div class="meta">No transactions recorded yet.</div>';
+    }else{
+      list.innerHTML = data.transactions.slice().reverse().slice(0,30).map(function(tx){
+        const sign = tx.type === "income" ? "+" : "−";
+        const className = tx.type === "income" ? "tx-income" : "tx-expense";
+        const dateText = new Date(tx.date + "T12:00:00")
+          .toLocaleDateString("en-AU",{day:"numeric",month:"short"});
+
+        return '<div class="family-transaction">' +
+          '<div><strong>' + escapeFamilyText(tx.category) + '</strong>' +
+          '<small>' + dateText +
+          (tx.description ? " · " + escapeFamilyText(tx.description) : "") +
+          '</small></div>' +
+          '<div class="tx-amount ' + className + '">' + sign + familyMoney(tx.amount) + '</div>' +
+          '<button class="delete-transaction" type="button" onclick="deleteFamilyTransaction(\'' +
+          tx.id + '\')" aria-label="Delete transaction">×</button>' +
+        '</div>';
+      }).join("");
+    }
+  };
+
+  window.addFamilyTransactionNow = function(){
+    const typeNode = document.getElementById("familyType");
+    const dateNode = document.getElementById("familyDate");
+    const categoryNode = document.getElementById("familyCategory");
+    const amountNode = document.getElementById("familyAmount");
+    const descriptionNode = document.getElementById("familyDescription");
+    const status = document.getElementById("familySaveStatus");
+
+    const amount = Number(amountNode.value || 0);
+
+    if(!Number.isFinite(amount) || amount <= 0){
+      status.style.color = "#ef9da5";
+      status.textContent = "Enter an amount greater than zero.";
+      return;
+    }
+
+    const data = loadFamilyData();
+    data.transactions.push({
+      id:Date.now().toString(36) + Math.random().toString(36).slice(2,7),
+      type:typeNode.value,
+      date:dateNode.value || new Date().toISOString().slice(0,10),
+      category:categoryNode.value,
+      amount:amount,
+      description:descriptionNode.value.trim()
+    });
+
+    saveFamilyData(data);
+    renderFamilyCashflow();
+
+    amountNode.value = "";
+    descriptionNode.value = "";
+    status.style.color = "var(--emerald)";
+    status.textContent = typeNode.value === "income" ? "Income added." : "Expense added.";
+
+    setTimeout(function(){
+      status.textContent = "";
+    },2200);
+  };
+
+  window.deleteFamilyTransaction = function(id){
+    const data = loadFamilyData();
+    data.transactions = data.transactions.filter(function(tx){
+      return tx.id !== id;
+    });
+    saveFamilyData(data);
+    renderFamilyCashflow();
+  };
+
+  window.clearAllFamilyTransactions = function(){
+    saveFamilyData({transactions:[]});
+    renderFamilyCashflow();
+  };
+
+  function updateFamilyType(){
+    const type = document.getElementById("familyType").value;
+    const category = document.getElementById("familyCategory");
+    const button = document.getElementById("addFamilyTransaction");
+
+    button.textContent = type === "income" ? "Add income" : "Add expense";
+
+    if(type === "income" && !["Pay","Bonus","Other"].includes(category.value)){
+      category.value = "Pay";
+    }
+    if(type === "expense" && ["Pay","Bonus"].includes(category.value)){
+      category.value = "Groceries";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded",function(){
+    const dateInput = document.getElementById("familyDate");
+    if(dateInput && !dateInput.value){
+      dateInput.value = new Date().toISOString().slice(0,10);
+    }
+
+    document.getElementById("familyType").addEventListener("change",updateFamilyType);
+    document.getElementById("clearFamilyTransactions").onclick = clearAllFamilyTransactions;
+
+    updateFamilyType();
+    renderFamilyCashflow();
+  });
+})();
+</script>
+
+</body>
+</html>
