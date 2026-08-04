@@ -1,0 +1,17 @@
+{
+  "name": "Homebound 5.0",
+  "short_name": "Homebound",
+  "description": "One step at a time. One dream at a time.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fffdf7",
+  "theme_color": "#fffdf7",
+  "icons": [
+    {
+      "src": "homebound-icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
